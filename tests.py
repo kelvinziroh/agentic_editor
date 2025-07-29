@@ -1,28 +1,24 @@
 # Import function
-from functions.get_files_info import get_files_info
+from functions.get_file_content import get_file_content
 
 # Define the test cases 
 test_cases = [
-    ("calculator", "."),
-    ("calculator", "pkg"),
-    ("calculator", "/bin"),
-    ("calculator", "../")
+    ("calculator", "main.py"),
+    ("calculator", "pkg/calculator.py"),
+    ("calculator", "/bin/cat"),
+    ("calculator", "pkg/does_not_exist.py")
 ]
 
 def test(input1, input2):
-    # Handle output for current and other directories
-    if input2 == ".":
-        print(f"Result for current directory")
-    else:
-        print(f"Result for '{input2}' directory")
+    # Handle output for files
+    print(f"Result for '{input2}' file:")
     
-    # Handle the result output for valid and invalid ouputs
-    result = get_files_info(input1, input2)
+    # Handle the result output for valid and invalid inputs
+    result = get_file_content(input1, input2)
     if result.startswith("Error"):
         print(f"\t{result}")
     else:
-        print(result)
-        
+        print(result)       
 
 def main():
     # Run the test cases
