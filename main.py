@@ -3,6 +3,7 @@ import sys
 from dotenv import load_dotenv
 from google import genai
 from google.genai import types
+from config import MODEL_NAME, SYSTEM_PROMPT
 
 
 def main():
@@ -26,8 +27,9 @@ def main():
 
     # Prompt the client instance
     response = client.models.generate_content(
-        model="gemini-2.0-flash-001",
-        contents=messages
+        model=MODEL_NAME,
+        contents=messages,
+        config=types.GenerateContentConfig(system_instruction=SYSTEM_PROMPT)
     )            
     
     # Displaly optional content based on command-line arguments
