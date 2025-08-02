@@ -3,7 +3,7 @@ import sys
 from dotenv import load_dotenv
 from google import genai
 from google.genai import types
-from config import MODEL_NAME, SYSTEM_PROMPT
+from config import *
 
 
 def main():
@@ -24,23 +24,40 @@ def main():
 
     # Instantiate a new Gemini client
     client = genai.Client(api_key=api_key)
-
+    
     # Prompt the client instance
     response = client.models.generate_content(
         model=MODEL_NAME,
         contents=messages,
-        config=types.GenerateContentConfig(system_instruction=SYSTEM_PROMPT)
+        config=types.GenerateContentConfig(
+            tools=[AVAILABLE_FUNCTIONS],
+            system_instruction=SYSTEM_PROMPT
+        )
     )            
     
+    # Set metadata string
+    metadata_str = f"""
+    User prompt: {user_prompt}\n
+    Prompt tokens: {response.usage_metadata.prompt_token_count}\n
+    Response tokens: {response.usage_metadata.candidates_token_count}
+    """
+    
+    # Check if there were any function calls
+    function_calls = response.function_calls
+    
     # Displaly optional content based on command-line arguments
-    if len(sys.argv) > 2:
-        if sys.argv[2] == "--verbose":
+    if len(sys.argv) > 2 and sys.argv[2] == "--verbose":
+        if function_calls:
+            print(f"Calling function: {function_calls[0].name}({function_calls[0].args})\n")
+            print(metadata_str)
+        else:
             print(f"{response.text}\n")
-            print(f"User prompt: {user_prompt}")
-            print(f"Prompt tokens: {response.usage_metadata.prompt_token_count}")
-            print(f"Response tokens: {response.usage_metadata.candidates_token_count}")
+            print(metadata_str)
     else:
-        print(f"{response.text}")
+        if function_calls:
+            print(f"Calling function: {function_calls[0].name}({function_calls[0].args})\n")
+        else:
+            print(f"{response.text}")
 
 if __name__ == "__main__":
     main()
