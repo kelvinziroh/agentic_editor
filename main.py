@@ -4,6 +4,10 @@ from dotenv import load_dotenv
 from google import genai
 from google.genai import types
 from config import *
+from functions.get_files_info import get_files_info
+from functions.get_file_content import get_file_content
+from functions.run_python import run_python_file
+from functions.write_file import write_file
 
 
 def main():
@@ -37,7 +41,7 @@ def main():
     
     # Set metadata string
     metadata_str = f"""
-    User prompt: {user_prompt}\n
+    User prompt: '{user_prompt}'\n
     Prompt tokens: {response.usage_metadata.prompt_token_count}\n
     Response tokens: {response.usage_metadata.candidates_token_count}
     """
