@@ -5,7 +5,10 @@ from google import genai
 from google.genai import types
 from config import *
 from call_function import available_functions
-
+from functions.get_file_content import get_file_content
+from functions.get_files_info import get_files_info
+from functions.run_python import run_python_file
+from functions.write_file import write_file
 
 def main():
     # Read the gemini api key from the env variable
@@ -55,7 +58,33 @@ def generate_content(client, messages, verbose):
         return response.text
 
     for function_call_part in response.function_calls:
-        print(f"Calling function: {function_call_part.name}({function_call_part.args})")   
+        print(f"Calling function: {function_call_part.name}({function_call_part.args})")
 
+
+def call_function(function_call_part, verbose=False):
+    
+    if verbose:
+        print(f"Calling function: {function_call_part.name}({function_call_part.args})")
+    else:
+        print(f" - Calling function: {function_call_part.name}")
+    
+    # Create dictionary mapping function names to function objects
+    function_map = {
+        "get_file_content": get_file_content,
+        "get_files_info": get_files_info,
+        "write_file": write_file,
+        "run_python_file": run_python_file,
+    }
+    
+    function_name = function_call_part.name
+    
+    if function_name in function_map:
+        function_call = function_map[function_name]
+        args_dict = function_call_part.args.copy()
+        args_dict["working_directory"] = "./calculator"
+        result = function_call(**args_dict)
+
+    
+    
 if __name__ == "__main__":
     main()
