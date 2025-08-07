@@ -48,12 +48,28 @@ def generate_content(client, messages, verbose):
         )
     )
     
+    
+    for candidate in response.candidates:
+        messages.append(candidate.content)
+    
     # Return the LLM text response if no function was called
     if not response.function_calls:
         return response.text
 
     for function_call_part in response.function_calls:    
         function_call_result = call_function(function_call_part, verbose)
+        
+        function_call_message = types.Content(
+            role="tool",
+            parts=[
+                types.Part.from_function_response(
+                    name=function_call_part.name,
+                    response={"Tool":f"{function_call_result}"}
+                )  
+            ],
+        )
+        
+        messages.append(function_call_message)
         
         if not function_call_result.parts[0].function_response.response:
             raise Exception(f"error: {function_call_part.name} did not execute as intended.")
