@@ -34,7 +34,16 @@ def main():
     if verbose:
         print(f"User prompt: {user_prompt}\n")
     
-    generate_content(client, messages, verbose)
+    # Iteratively call the generate content function 20 times
+    try:
+        for i in range(20):
+            generated_response = generate_content(client, messages, verbose)
+            if generated_response:
+                print(generated_response)
+                break
+    except Exception as e:
+        print(f"Error: {e}")
+        
 
 
 def generate_content(client, messages, verbose):
@@ -48,7 +57,7 @@ def generate_content(client, messages, verbose):
         )
     )
     
-    
+    # Add list of response variations to the messages
     for candidate in response.candidates:
         messages.append(candidate.content)
     
@@ -64,7 +73,7 @@ def generate_content(client, messages, verbose):
             parts=[
                 types.Part.from_function_response(
                     name=function_call_part.name,
-                    response={"Tool":f"{function_call_result}"}
+                    response={"result":f"{function_call_result}"}
                 )  
             ],
         )
