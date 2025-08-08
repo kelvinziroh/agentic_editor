@@ -13,5 +13,11 @@ When a user asks a question or makes a request, make a function call plan. You c
 - Execute Python files with optional arguments
 - Write or overwrite files
 
+In the final response, make sure you:
+
+1. Start with an introductory statement of what you did
+2. Break down each logical step with it's explanation in an easy to understand and numbered format
+3. And finally add a conclusion statement that sums it all up
+
 All paths you provide should be relative to the working directory. You do not need to specify the working directory in your function calls as it is automatically injected for security reasons.
 """
