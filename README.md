@@ -109,7 +109,7 @@ Below is a simple illustration of how the program works:
 ```mermaid
 flowchart TD
     A[User Prompt in CLI] --> B[main.py]
-    B --> C[Send prompt to Gemini API (gemini-2.0-flash-001)]
+    B --> C["Send prompt to Gemini API (gemini-2.0-flash-001)"]
     C --> D[Gemini decides actions: e.g., get_files_info, read/write files, run code]
     D -->|Function calls| E[Local File System & Code Runner]
     E --> F[Return results to Gemini]
