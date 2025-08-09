@@ -122,20 +122,17 @@ flowchart TD
 
     %% CLI subgraph
     subgraph CLI_subgraph[ ]
-        T1[CLI]:::title
+        T1[CLI]
         A
         I
     end
 
     %% Local System subgraph
     subgraph LocalSystem_subgraph[ ]
-        T2[Local System]:::title
+        T2[Local System]
         E
         F
     end
-
-    %% Style definitions
-    classDef title fill=none,stroke=none,font-weight=bold,font-size:14px;
 ```
 
 ## ⚠️ Disclaimer
