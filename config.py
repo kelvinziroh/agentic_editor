@@ -20,4 +20,10 @@ In the final response, make sure you:
 3. And finally add a conclusion statement that sums it all up
 
 All paths you provide should be relative to the working directory. You do not need to specify the working directory in your function calls as it is automatically injected for security reasons.
+
+BE CONCISE!
 """
+
+# program attributes
+WORKING_DIR = "./calculator"
+MAX_ITERS = 20
