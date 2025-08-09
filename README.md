@@ -105,16 +105,29 @@ In conclusion, the working directory contains a `_pycache_` directory, `tests.py
 ```
 
 ## ⚙️ How It Works
-Below is a simple illustration of how the program works:
+Below is a simple flowchart illustration demonstrating how the program works:
 ```mermaid
 flowchart TD
     A[User Prompt in CLI] --> B[main.py]
+    subgraph CLI
+        A
+        I["--verbose flag (optional)"]
+    end
+
     B --> C["Send prompt to Gemini API (gemini-2.0-flash-001)"]
-    C --> D[Gemini decides actions: e.g., get_files_info, read/write files, run code]
-    D -->|Function calls| E[Local File System & Code Runner]
-    E --> F[Return results to Gemini]
-    F --> G[Gemini forms final answer]
-    G --> H[Output shown in terminal]
+    C --> D["Gemini interprets prompt and decides actions"]
+    D -->|Function Calls| E["Local Functions: get_files_info, get_file_content, write_file, run_python_file"]
+
+    subgraph Local System
+        E --> F["Access Local File System & Execute Code"]
+        F --> G["Return execution results & file changes"]
+    end
+
+    G --> H["Gemini forms final natural language response"]
+    H --> K[Display output in terminal]
+
+    I --> L["Verbose Mode: Show token usage and function logs"]
+    L --> K
 ```
 
 ## ⚠️ Disclaimer
