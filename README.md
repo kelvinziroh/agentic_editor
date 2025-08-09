@@ -109,25 +109,33 @@ Below is a simple flowchart illustration demonstrating how the program works:
 ```mermaid
 flowchart TD
     A[User Prompt in CLI] --> B[main.py]
-    subgraph CLI
-        A
-        I["--verbose flag (optional)"]
-    end
+    I["--verbose flag (optional)"] --> L["Verbose Mode: Show token usage and function logs"]
 
     B --> C["Send prompt to Gemini API (gemini-2.0-flash-001)"]
     C --> D["Gemini interprets prompt and decides actions"]
     D -->|Function Calls| E["Local Functions: get_files_info, get_file_content, write_file, run_python_file"]
-
-    subgraph Local System
-        E --> F["Access Local File System & Execute Code"]
-        F --> G["Return execution results & file changes"]
-    end
-
+    E --> F["Access Local File System & Execute Code"]
+    F --> G["Return execution results & file changes"]
     G --> H["Gemini forms final natural language response"]
     H --> K[Display output in terminal]
-
-    I --> L["Verbose Mode: Show token usage and function logs"]
     L --> K
+
+    %% CLI subgraph
+    subgraph CLI_subgraph[ ]
+        T1[CLI]:::title
+        A
+        I
+    end
+
+    %% Local System subgraph
+    subgraph LocalSystem_subgraph[ ]
+        T2[Local System]:::title
+        E
+        F
+    end
+
+    %% Style definitions
+    classDef title fill=none,stroke=none,font-weight=bold,font-size:14px;
 ```
 
 ## ⚠️ Disclaimer
